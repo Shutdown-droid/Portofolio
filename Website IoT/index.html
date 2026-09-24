@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Aquaculture V3 — Tambak Cerdas Berbasis IoT</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><div class="logo-dot"></div>SAV3 — Smart Aquaculture</div>
+  <div class="nav-links">
+    <a href="#tentang">Tentang</a>
+    <a href="#fitur">Fitur</a>
+    <a href="#model3d">Model 3D</a>
+    <a href="#monitor">Monitor</a>
+    <a href="#kontrol">Kontrol</a>
+    <a href="#roadmap-sec">Roadmap</a>
+  </div>
+  <div class="nav-pill">POC V3.0</div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<div id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb"></div>
+  <div class="hero-content anim">
+    <div class="hero-chip">Proof of Concept — Budidaya Perikanan Modern</div>
+    <h1>Smart Aquaculture:<br><span class="acc">Tambak Cerdas</span><br>Berbasis IoT</h1>
+    <p class="hero-sub">Solusi terintegrasi untuk penjadwalan pakan presisi dan pemantauan kualitas air real-time. Mandiri energi, tanpa batas jarak, beroperasi 24 jam penuh secara otomatis.</p>
+    <div class="hero-btns">
+      <a href="#monitor" class="btn btn-p">▶ Dashboard Live</a>
+      <a href="#fitur" class="btn btn-s">Eksplorasi Fitur →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-box"><span class="stat-num">100%</span><span class="stat-label">Off-Grid Solar</span></div>
+      <div class="stat-box"><span class="stat-num">2×</span><span class="stat-label">Jadwal Pakan/Hari</span></div>
+      <div class="stat-box"><span class="stat-num">500</span><span class="stat-label">PPM Threshold TDS</span></div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ═══════════ TENTANG ═══════════ -->
+<section id="tentang">
+  <div class="about-grid">
+    <div class="about-canvas-wrap anim">
+      <canvas id="about-canvas" width="500" height="420"></canvas>
+    </div>
+    <div class="about-text anim">
+      <div class="sec-tag">01 — Tentang Sistem</div>
+      <h2>Inovasi Budidaya<br>dari Pendidikan Vokasi</h2>
+      <p><strong>Sistem Smart Aquaculture V3</strong> merupakan prototipe Proof of Concept yang dirancang untuk menjawab tantangan utama dalam budidaya perikanan: efisiensi pemberian pakan dan manajemen kualitas air.</p>
+      <p>Dibangun dengan mikrokontroler <strong>ESP32</strong> sebagai pusat pemrosesan logika, sistem ini menggabungkan aktuator mekanis dan sensor cerdas untuk menggantikan metode budidaya konvensional yang menguras tenaga pembudidaya.</p>
+      <p>Dirancang untuk beroperasi sepenuhnya <strong>Off-Grid</strong> menggunakan energi surya — membebaskan pembudidaya dari ketergantungan jaringan listrik PLN dan memungkinkan penempatan di lokasi terpencil sekalipun.</p>
+      <div class="chips">
+        <span class="chip">ESP32 MCU</span><span class="chip">HC-SR04</span><span class="chip">Sensor TDS</span>
+        <span class="chip">Motor Servo</span><span class="chip">Motor DC</span><span class="chip">Solar 10WP</span>
+        <span class="chip">Aki 12V/5Ah</span><span class="chip">SCC Otomatis</span><span class="chip">NTP Global</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══════════ FITUR ═══════════ -->
+<section id="fitur">
+  <div class="sec-tag anim">02 — Fitur Unggulan</div>
+  <h2 class="anim">Empat Sistem<br>Terintegrasi</h2>
+  <p class="sec-lead anim">Setiap komponen dirancang saling mendukung, menciptakan ekosistem otomatisasi tambak yang presisi, andal, dan efisien sepanjang waktu.</p>
+  <div class="feat-grid">
+    <div class="feat-card anim">
+      <div class="feat-icon">☀️</div>
+      <div class="feat-tag">FEAT 01</div>
+      <div class="feat-title">Kemandirian Energi<span class="feat-badge">Off-Grid</span></div>
+      <p class="feat-desc">Beroperasi 100% tanpa PLN menggunakan Panel Surya 10WP dan Aki 12V 5Ah. Solar Charge Controller (SCC) mengatur daya otomatis, mencegah overcharge, dan memperpanjang usia baterai secara signifikan.</p>
+      <div class="feat-spec">Solar 10WP → SCC → Aki 12V/5Ah → ESP32</div>
+    </div>
+    <div class="feat-card anim">
+      <div class="feat-icon">🌀</div>
+      <div class="feat-tag">FEAT 02</div>
+      <div class="feat-title">Penyebaran Sentrifugal<span class="feat-badge">Presisi</span></div>
+      <p class="feat-desc">Meninggalkan penebaran satu titik yang tidak merata. Motor DC berkecepatan tinggi menghasilkan gaya sentrifugal untuk mendistribusikan pakan secara merata ke seluruh permukaan kolam budidaya.</p>
+      <div class="feat-spec">Motor DC → Baling-baling → Distribusi Area Luas</div>
+    </div>
+    <div class="feat-card anim">
+      <div class="feat-icon">📡</div>
+      <div class="feat-tag">FEAT 03</div>
+      <div class="feat-title">Monitoring Non-Kontak<span class="feat-badge">HC-SR04</span></div>
+      <p class="feat-desc">Estimasi stok pakan menggunakan sensor ultrasonik HC-SR04. Pengukuran presisi tanpa menyentuh material pakan — menjaga kebersihan wadah dan keawetan sensor di lingkungan lembap.</p>
+      <div class="feat-spec">HC-SR04 → Jarak (cm) → Estimasi Stok (%)</div>
+    </div>
+    <div class="feat-card anim">
+      <div class="feat-icon">🔔</div>
+      <div class="feat-tag">FEAT 04</div>
+      <div class="feat-title">Early Warning System<span class="feat-badge">TDS Alert</span></div>
+      <p class="feat-desc">Sensor TDS memantau kepekatan air secara kontinyu. Sistem mengirim push notification otomatis jika TDS melampaui 500 PPM — mencegah risiko keracunan amonia pada ikan sebelum terlambat.</p>
+      <div class="feat-spec">TDS &gt; 500 PPM → Alert → Push Notification</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══════════ MODEL 3D ═══════════ -->
+<section id="model3d">
+  <div class="sec-tag anim">03 — Visualisasi Alat</div>
+  <h2 class="anim">Model 3D Interaktif<br>Smart Aquaculture</h2>
+  <p class="sec-lead anim">Eksplorasi struktur fisik alat secara langsung. Drag untuk rotasi, scroll untuk zoom. Dibuat berdasarkan desain fisik alat asli.</p>
+  <div id="canvas3d-wrap" class="anim">
+    <div class="canvas3d-hint">🖱 Drag untuk Rotasi · Scroll untuk Zoom · Double-click untuk Reset</div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══════════ DASHBOARD ═══════════ -->
+<section id="monitor">
+  <div class="sec-tag anim">04 — Dashboard Monitor</div>
+  <h2 class="anim">Status Sistem Real-Time</h2>
+  <div class="db-panel anim">
+    <div class="db-header">
+      <div class="db-title"><div class="live-dot"></div>AQUA_SYS — Status Aktif</div>
+      <div class="db-ts" id="clk">—:—:— WIB</div>
+    </div>
+    <div class="metrics-row">
+      <div class="metric-box">
+        <div class="metric-lbl">TDS Air Kolam</div>
+        <div class="metric-val ok" id="m-tds">342</div>
+        <div class="metric-unit">PPM / Batas 500</div>
+        <div class="mbar"><div class="mbar-fill" id="b-tds" style="width:68%;background:var(--acc)"></div></div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-lbl">Stok Pakan</div>
+        <div class="metric-val ok" id="m-stok">73</div>
+        <div class="metric-unit">% Kapasitas Wadah</div>
+        <div class="mbar"><div class="mbar-fill" id="b-stok" style="width:73%;background:var(--acc)"></div></div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-lbl">Baterai Aki</div>
+        <div class="metric-val ok" id="m-bat">88</div>
+        <div class="metric-unit">% Daya 12V/5Ah</div>
+        <div class="mbar"><div class="mbar-fill" id="b-bat" style="width:88%;background:var(--acc)"></div></div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-lbl">Pakan Berikutnya</div>
+        <div class="metric-val ok" id="m-next" style="font-size:1.4rem">16:30</div>
+        <div class="metric-unit" id="m-next-lbl">Jadwal Aktif WIB</div>
+        <div class="mbar"><div class="mbar-fill" id="b-next" style="width:55%;background:var(--acc)"></div></div>
+      </div>
+    </div>
+    <div class="db-footer">
+      <span id="log-line" style="font-family:var(--mono);font-size:.65rem;color:var(--tx3);flex:1">[ <span style="color:var(--acc)">OK</span> ] Sistem normal — NTP sync berhasil</span>
+      <button class="btn-sm" onclick="refreshDash()">↻ Refresh</button>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══════════ KONTROL ═══════════ -->
+<section id="kontrol">
+  <div class="sec-tag anim">05 — Kontrol Interaktif</div>
+  <h2 class="anim">Jadwal Pakan &amp;<br>Servo Katup</h2>
+  <div class="ctrl-grid">
+
+    <!-- Jadwal -->
+    <div class="ctrl-panel anim">
+      <div class="ctrl-head">
+        <div class="ctrl-title">📅 Jadwal Pakan Otomatis</div>
+        <div class="btn-row">
+          <button class="btn-sm" onclick="resetJadwal()">↺ Reset</button>
+          <button class="btn-sm" onclick="showAdd()">+ Tambah</button>
+        </div>
+      </div>
+      <div class="ctrl-body">
+        <div id="add-box" class="add-box" style="display:none">
+          <div style="font-family:var(--mono);font-size:.63rem;color:var(--acc2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.8rem">Jadwal Baru</div>
+          <div class="add-grid">
+            <div><label class="flbl">Jam (0–23)</label><input class="finput" id="in-h" type="number" min="0" max="23" value="8"></div>
+            <div><label class="flbl">Menit (0–59)</label><input class="finput" id="in-m" type="number" min="0" max="59" value="0"></div>
+            <div><label class="flbl">Label</label><input class="finput" id="in-lbl" type="text" placeholder="Siang" maxlength="10"></div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-sm" style="color:var(--acc)" onclick="addJadwal()">✓ Simpan</button>
+            <button class="btn-sm" style="color:var(--tx3)" onclick="hideAdd()">✕ Batal</button>
+          </div>
+        </div>
+        <div id="sched-list" class="sched-list"></div>
+      </div>
+      <div class="ctrl-foot">* Toggle aktif/nonaktif · ✎ edit waktu · ↺ reset ke pabrik (05:00 &amp; 16:30)</div>
+    </div>
+
+    <!-- Servo -->
+    <div class="ctrl-panel anim">
+      <div class="ctrl-head">
+        <div class="ctrl-title">🔧 Kontrol Servo Katup</div>
+        <button class="btn-sm" onclick="resetServo()">↺ Reset Default</button>
+      </div>
+      <div class="ctrl-body">
+        <div class="servo-wrap">
+          <div class="servo-ring">
+            <svg viewBox="0 0 160 160"><circle cx="80" cy="80" r="68" fill="none" stroke="var(--bd2)" stroke-width="2"/><circle cx="80" cy="80" r="68" fill="none" id="srv-arc" stroke="var(--acc)" stroke-width="3" stroke-dasharray="427" stroke-dashoffset="427" stroke-linecap="round" transform="rotate(-90 80 80)" style="transition:stroke-dashoffset .7s ease"/></svg>
+            <div class="servo-inner">
+              <span class="servo-icon" id="srv-icon">🔒</span>
+              <span class="servo-state" id="srv-state">TERTUTUP</span>
+              <span class="servo-angle" id="srv-angle">0°</span>
+            </div>
+          </div>
+          <div class="slider-wrap">
+            <div class="slider-row">
+              <span>TUTUP 0°</span>
+              <span id="srv-disp" style="color:var(--acc);font-weight:700">0°</span>
+              <span>BUKA 180°</span>
+            </div>
+            <input type="range" id="srv-slider" min="0" max="180" value="0" step="1" style="accent-color:var(--acc)" oninput="doServo(this.value)">
+          </div>
+          <div class="presets">
+            <button class="preset-btn active" data-v="0" onclick="setServo(0)">0°<br><small>Tutup</small></button>
+            <button class="preset-btn" data-v="45" onclick="setServo(45)">45°<br><small>¼ Buka</small></button>
+            <button class="preset-btn" data-v="90" onclick="setServo(90)">90°<br><small>½ Buka</small></button>
+            <button class="preset-btn" data-v="180" onclick="setServo(180)">180°<br><small>Penuh</small></button>
+          </div>
+          <div class="servo-status-bar">
+            <span style="font-family:var(--mono);font-size:.6rem;color:var(--tx3)">STATUS</span>
+            <span id="srv-status" style="font-family:var(--mono);font-size:.65rem;color:var(--tx2)">STANDBY — 0° (TERTUTUP)</span>
+          </div>
+        </div>
+      </div>
+      <div class="ctrl-foot">* Reset mengembalikan ke 0° tertutup — posisi aman default perangkat</div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══════════ WORKFLOW ═══════════ -->
+<section id="workflow">
+  <div class="sec-tag anim">06 — Alur &amp; Material</div>
+  <h2 class="anim">Cara Kerja Sistem<br>Step by Step</h2>
+  <div class="tl anim">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-step">STEP 01</div>
+      <div class="tl-title">Energi Surya Mengisi Sistem</div>
+      <p class="tl-desc">Panel surya 10WP menangkap radiasi matahari dan mengisi aki 12V/5Ah melalui Solar Charge Controller. SCC secara cerdas menghentikan pengisian saat penuh, mencegah overcharge dan memperpanjang umur baterai.</p>
+      <span class="tl-tag">Solar 10WP → SCC → Aki 12V/5Ah → ESP32</span>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-step">STEP 02</div>
+      <div class="tl-title">ESP32 Sinkronisasi Waktu Global (NTP)</div>
+      <p class="tl-desc">Saat sistem menyala, ESP32 terhubung ke NTP Server global untuk memperoleh waktu yang presisi. Sistem selalu tepat waktu tanpa pengaturan manual, bahkan setelah restart.</p>
+      <span class="tl-tag">NTP Server → RTC Internal ESP32 → Presisi Waktu</span>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-step">STEP 03</div>
+      <div class="tl-title">Pakan Didistribusikan Otomatis</div>
+      <p class="tl-desc">Wadah pakan HDPE/PP food-safe, waterproof, dan tahan UV. Saat jadwal aktif, katup servo membuka corong, pakan jatuh ke rumah baling-baling, motor DC spin dan gaya sentrifugal mendistribusikan pakan merata ke kolam.</p>
+      <span class="tl-tag">Servo Buka → Pakan Jatuh → Motor DC → Distribusi Merata</span>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-step">STEP 04</div>
+      <div class="tl-title">Monitoring Real-Time TDS &amp; Stok</div>
+      <p class="tl-desc">Sensor TDS memantau kepekatan air setiap siklus. Sensor ultrasonik HC-SR04 mengukur jarak ke permukaan pakan tanpa kontak fisik untuk estimasi stok — menjaga kebersihan dan keawetan sensor.</p>
+      <span class="tl-tag">HC-SR04 Non-Contact → % Stok | TDS Kontinyu</span>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-step">STEP 05</div>
+      <div class="tl-title">Early Warning — Push Notification Instan</div>
+      <p class="tl-desc">Jika TDS melampaui 500 PPM, sistem langsung mengirim push notification ke HP pembudidaya. Tindakan cepat dapat dilakukan sebelum ikan stres atau keracunan amonia.</p>
+      <span class="tl-tag">TDS Alert → Push Notification → HP Pembudidaya</span>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══════════ ROADMAP ═══════════ -->
+<div id="roadmap-sec">
+  <div class="rm-inner">
+    <div class="sec-tag anim">07 — Roadmap</div>
+    <h2 class="anim">Visi Skala Industri</h2>
+    <p class="sec-lead anim">Sebagai engineer, inovasi tidak berhenti di prototipe. Sistem dirancang modular dan siap ditingkatkan menuju implementasi tambak komersial berskala besar.</p>
+    <div class="rm-grid">
+      <div class="rm-card curr anim">
+        <div class="rm-badge b-done">✓ DONE</div>
+        <div class="rm-phase">Phase 01 — Current</div>
+        <div class="rm-name">Prototipe &amp; POC</div>
+        <ul class="rm-ul">
+          <li>ESP32 sebagai MCU utama</li>
+          <li>Solar 10WP + Aki 12V/5Ah + SCC</li>
+          <li>Penyebaran sentrifugal motor DC</li>
+          <li>Sensor TDS + HC-SR04 Ultrasonik</li>
+          <li>Jadwal NTP otomatis (05:00 &amp; 16:30)</li>
+          <li>Push notification real-time</li>
+        </ul>
+      </div>
+      <div class="rm-card anim">
+        <div class="rm-badge b-wip">NEXT</div>
+        <div class="rm-phase">Phase 02 — Upgrade</div>
+        <div class="rm-name">Daya &amp; Material</div>
+        <ul class="rm-ul">
+          <li>Solar Panel 50WP</li>
+          <li>Aki 20Ah kapasitas tinggi</li>
+          <li>Aktuator Solar Tracker otomatis</li>
+          <li>Rangka plat baja anti-korosi</li>
+          <li>Corong Stainless Steel premium</li>
+        </ul>
+      </div>
+      <div class="rm-card anim">
+        <div class="rm-badge b-plan">PLANNED</div>
+        <div class="rm-phase">Phase 03 — Smart</div>
+        <div class="rm-name">Ekspansi Sensor &amp; AI</div>
+        <ul class="rm-ul">
+          <li>Sensor Suhu air presisi</li>
+          <li>pH meter industrial-grade</li>
+          <li>Relai otomatisasi pompa air</li>
+          <li>Kamera pemantauan kolam</li>
+          <li>AI fish health detection</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ═══════════ DEVELOPER ═══════════ -->
+<section id="dev-sec">
+  <div class="sec-tag anim" style="text-align:center">08 — Pengembang</div>
+  <h2 class="anim" style="text-align:center">Dikembangkan Oleh</h2>
+  <div class="dev-card anim">
+    <div class="dev-ava">AA</div>
+    <div class="dev-name">Arsad Azami Nursamal</div>
+    <div class="dev-role">Sistem Informasi Jaringan &amp; Aplikasi (SIJA)</div>
+    <div class="dev-school">SMKN 2 Yogyakarta</div>
+    <p class="dev-desc">Inovasi ini lahir dari ruang lingkup pendidikan vokasi, menggabungkan ilmu jaringan internet, integrasi perangkat keras (hardware), dan algoritma perangkat lunak (software) untuk memajukan sektor agrikultur di Indonesia.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="ft">© 2025 Smart Aquaculture V3 — Arsad Azami Nursamal // SMKN 2 Yogyakarta</div>
+  <div class="ft">ESP32 · IoT · Solar Energy · Aquaculture Innovation</div>
+</footer>
+
+<!-- ═══════════ AI CHATBOT ═══════════ -->
+<div id="chat-bubble">
+  <div class="chat-window" id="chat-win">
+    <div class="chat-head">
+      <div class="chat-avatar">🤖</div>
+      <div class="chat-info">
+        <div class="chat-name">AquaBot AI</div>
+        <div class="chat-status">Online — Siap berdiskusi</div>
+      </div>
+      <button class="chat-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="chat-msgs" id="chat-msgs"></div>
+    <div class="chat-quick" id="quick-btns">
+      <button class="quick-btn" onclick="quickAsk('Jelaskan cara kerja sistem ini')">Cara kerja sistem?</button>
+      <button class="quick-btn" onclick="quickAsk('Apa itu sensor TDS?')">Sensor TDS?</button>
+      <button class="quick-btn" onclick="quickAsk('Kenapa pakai ESP32?')">Kenapa ESP32?</button>
+      <button class="quick-btn" onclick="quickAsk('Tips budidaya ikan yang baik')">Tips budidaya?</button>
+    </div>
+    <div class="chat-input-row">
+      <input id="chat-input" placeholder="Tanya apapun tentang aquaculture..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}">
+      <button class="chat-send" id="chat-send-btn" onclick="sendMsg()">➤</button>
+    </div>
+  </div>
+  <button class="chat-fab" onclick="toggleChat()" title="Chat dengan AquaBot AI">
+    🤖
+    <div class="badge" id="chat-badge">1</div>
+  </button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
