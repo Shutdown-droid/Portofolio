@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Aquaculture V3 — Kendali Tambak Cerdas</title>
+<meta name="description" content="Dashboard IoT untuk sistem pakan otomatis dan pemantauan kualitas air tambak, mandiri energi surya.">
+<meta name="theme-color" content="#0a1614">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%8A%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ============================= NAVBAR ============================= -->
+<header class="navbar" id="navbar">
+  <div class="navbar__inner">
+    <a href="#top" class="navbar__brand">
+      <span class="navbar__brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c3 4 6 7.5 6 11.5A6 6 0 0 1 6 13.5C6 9.5 9 6 12 2Z"/></svg>
+      </span>
+      Aquaculture V3
+    </a>
+
+    <nav class="navbar__links" aria-label="Navigasi utama">
+      <a class="navbar__link" href="#fitur">Fitur</a>
+      <a class="navbar__link" href="#monitor">Monitor</a>
+      <a class="navbar__link" href="#kontrol">Kontrol</a>
+      <a class="navbar__link" href="#roadmap">Roadmap</a>
+    </nav>
+
+    <div class="navbar__status">
+      <span class="dot dot--live" aria-hidden="true"></span>
+      Sistem aktif
+    </div>
+
+    <button class="navbar__toggle" id="navToggle" aria-expanded="false" aria-controls="navMobilePanel" aria-label="Buka menu navigasi">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+
+    <nav class="navbar__mobile-panel" id="navMobilePanel" aria-label="Navigasi mobile">
+      <a class="navbar__link" href="#fitur">Fitur</a>
+      <a class="navbar__link" href="#monitor">Monitor</a>
+      <a class="navbar__link" href="#kontrol">Kontrol</a>
+      <a class="navbar__link" href="#roadmap">Roadmap</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============================= HERO ============================= -->
+  <section class="hero">
+    <canvas class="hero__canvas" id="heroCanvas" aria-hidden="true"></canvas>
+
+    <div class="container">
+      <div class="hero__inner">
+
+        <div class="hero__content">
+          <p class="eyebrow-pill">
+            <span class="dot" aria-hidden="true"></span>
+            Prototipe generasi ketiga
+          </p>
+
+          <h1 class="hero__title">Smart Aquaculture V3</h1>
+
+          <p class="hero__lead">
+            Kendalikan jadwal pakan dan pantau kualitas air kolam dari genggaman tangan — sepenuhnya otomatis, sepenuhnya mandiri energi surya.
+          </p>
+
+          <div class="hero__actions">
+            <a href="#monitor" class="btn btn--primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 5v2M12 17v2M5 12h2M17 12h2"/></svg>
+              Buka monitor
+            </a>
+            <a href="#kontrol" class="btn btn--ghost">Atur jadwal pakan</a>
+          </div>
+        </div>
+
+        <aside class="hero__status glass-panel reveal">
+          <div class="hero__status-head">
+            <span class="hero__status-title">Status langsung</span>
+            <span class="hero__status-live">
+              <span class="dot dot--live" aria-hidden="true"></span>
+              Live
+            </span>
+          </div>
+
+          <ul class="hero__status-list">
+            <li class="hero__status-item">
+              <span class="hero__status-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>
+              </span>
+              <span class="hero__status-text">
+                <span class="hero__status-label">Daya sistem</span><br>
+                <span class="hero__status-value" id="statPower">98% · Solar aktif</span>
+              </span>
+            </li>
+            <li class="hero__status-item">
+              <span class="hero__status-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c3 4 6 7.5 6 11.5A6 6 0 0 1 6 13.5C6 9.5 9 6 12 2Z"/></svg>
+              </span>
+              <span class="hero__status-text">
+                <span class="hero__status-label">Kualitas air</span><br>
+                <span class="hero__status-value" id="statWater">Optimal · 342 PPM</span>
+              </span>
+            </li>
+            <li class="hero__status-item">
+              <span class="hero__status-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10M12 13c-4 0-7 1.8-7 5v3h14v-3c0-3.2-3-5-7-5Z"/></svg>
+              </span>
+              <span class="hero__status-text">
+                <span class="hero__status-label">Stok pakan</span><br>
+                <span class="hero__status-value" id="statFeed">73% kapasitas</span>
+              </span>
+            </li>
+            <li class="hero__status-item">
+              <span class="hero__status-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 9h6v6H9z"/></svg>
+              </span>
+              <span class="hero__status-text">
+                <span class="hero__status-label">Mode operasi</span><br>
+                <span class="hero__status-value" id="statMode">Otomatis · NTP tersinkron</span>
+              </span>
+            </li>
+          </ul>
+
+          <p class="hero__status-foot" id="statTimestamp">diperbarui baru saja</p>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= FITUR ============================= -->
+  <section class="section" id="fitur">
+    <div class="container">
+      <div class="section__head reveal">
+        <h2 class="section__title">Empat sistem yang bekerja tanpa pengawasan</h2>
+        <p class="section__lead">Setiap bagian dirancang untuk menutupi kelemahan yang lain — dari sumber daya hingga takaran pakan — sehingga kolam tetap terjaga bahkan saat tidak ada yang memantau.</p>
+      </div>
+
+      <div class="features__grid">
+
+        <article class="feature-card feature-card--lg glass-panel reveal">
+          <span class="feature-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>
+          </span>
+          <h3 class="feature-card__title">Energi off-grid</h3>
+          <p class="feature-card__text">
+            Panel surya 10WP dan aki 12V/5Ah menjaga sistem tetap menyala sepanjang hari tanpa sambungan PLN. Solar Charge Controller mengatur arus pengisian secara otomatis, mencegah overcharge, dan memperpanjang usia baterai — sehingga alat bisa ditempatkan di kolam mana pun, sejauh apa pun dari jaringan listrik.
+          </p>
+          <div class="feature-card__visual" aria-hidden="true">
+            <span class="feature-card__visual-bar"></span>
+            <span class="feature-card__visual-bar"></span>
+            <span class="feature-card__visual-bar"></span>
+            <span class="feature-card__visual-bar"></span>
+            <span class="feature-card__visual-bar"></span>
+            <span class="feature-card__visual-bar"></span>
+            <span class="feature-card__visual-bar"></span>
+          </div>
+        </article>
+
+        <article class="feature-card glass-panel reveal">
+          <span class="feature-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c3 4 6 7.5 6 11.5A6 6 0 0 1 6 13.5C6 9.5 9 6 12 2Z"/></svg>
+          </span>
+          <h3 class="feature-card__title">Sensor TDS</h3>
+          <p class="feature-card__text">
+            Memantau kepekatan air setiap saat dan memberi peringatan dini begitu kadarnya melewati 500 PPM — sebelum amonia sempat membahayakan ikan.
+          </p>
+        </article>
+
+        <article class="feature-card glass-panel reveal">
+          <span class="feature-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c2-4 4-6 4-6s2 2 4 2 2-4 4-4 2 6 4 6 2-2 4-2"/></svg>
+          </span>
+          <h3 class="feature-card__title">Sensor ultrasonik</h3>
+          <p class="feature-card__text">
+            Mengukur sisa pakan lewat pantulan gelombang suara HC-SR04, tanpa pernah menyentuh bahan pakan — menjaga sensor tetap bersih dan awet.
+          </p>
+        </article>
+
+        <article class="feature-card feature-card--wide glass-panel reveal">
+          <span class="feature-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 5V3M12 21v-2M5 12H3M21 12h-2M7.5 7.5 6 6M18 18l-1.5-1.5M7.5 16.5 6 18M18 6l-1.5 1.5"/></svg>
+          </span>
+          <div class="feature-card__body">
+            <h3 class="feature-card__title">Katup servo presisi</h3>
+            <p class="feature-card__text">
+              Motor servo membuka corong pakan tepat pada jadwalnya, lalu motor DC berputar cepat untuk menyebarkan pakan secara merata ke seluruh permukaan kolam — bukan menumpuk di satu titik.
+            </p>
+          </div>
+          <div class="feature-card__servo-viz" aria-hidden="true">
+            <svg viewBox="0 0 76 76" width="76" height="76">
+              <circle class="mini-dial__track" cx="38" cy="38" r="30"/>
+              <circle class="mini-dial__arc" cx="38" cy="38" r="30" stroke-dasharray="141 188" transform="rotate(-90 38 38)"/>
+            </svg>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= MONITOR ============================= -->
+  <section class="section" id="monitor">
+    <div class="container">
+      <div class="section__head reveal">
+        <div class="section__title-row">
+          <h2 class="section__title">Semua kondisi kolam, dalam satu pandangan</h2>
+          <span class="data-badge" id="dataSourceBadge">◔ Data simulasi (demo)</span>
+        </div>
+        <p class="section__lead">Data berikut diperbarui berkala mengikuti pembacaan sensor — kualitas air, sisa pakan, daya baterai, dan jadwal berikutnya.</p>
+      </div>
+
+      <div class="monitor__grid">
+
+        <div class="monitor__card monitor__card--gauge glass-panel reveal">
+          <div class="gauge">
+            <svg class="gauge__svg" viewBox="0 0 180 180">
+              <circle class="gauge__track" cx="90" cy="90" r="72"/>
+              <circle class="gauge__arc" id="tdsArc" cx="90" cy="90" r="72"/>
+            </svg>
+            <div class="gauge__readout">
+              <span class="gauge__value" id="tdsValue">342</span>
+              <span class="gauge__unit">PPM TDS</span>
+            </div>
+          </div>
+          <p class="monitor__card-title">Kualitas air</p>
+          <p class="monitor__card-sub" id="tdsState">Aman &middot; ambang 500 PPM</p>
+        </div>
+
+        <div class="monitor__card monitor__card--feed glass-panel reveal">
+          <div class="silo" aria-hidden="true">
+            <div class="silo__fill" id="feedSilo"></div>
+          </div>
+          <div class="monitor__card-body">
+            <p class="monitor__card-label">Stok pakan</p>
+            <span class="gauge__value" id="feedValue">73%</span>
+            <p class="monitor__card-sub">kapasitas wadah HDPE</p>
+          </div>
+        </div>
+
+        <div class="monitor__card monitor__card--battery glass-panel reveal">
+          <div class="battery" id="batteryIndicator" aria-hidden="true">
+            <svg class="battery__svg" viewBox="0 0 52 30">
+              <rect class="battery__outline" x="1" y="1" width="44" height="28" rx="6"/>
+              <rect class="battery__nub" x="47" y="10" width="4" height="10" rx="2"/>
+              <rect class="battery__fill" id="batteryFill" x="5" y="5" width="32" height="20" rx="3"/>
+            </svg>
+            <svg class="battery__bolt" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>
+          </div>
+          <div class="monitor__card-body">
+            <p class="monitor__card-label">Baterai aki</p>
+            <span class="gauge__value" id="batteryValue">88%</span>
+            <p class="monitor__card-sub" id="batteryState">mengisi &middot; solar aktif</p>
+          </div>
+        </div>
+
+        <div class="monitor__card monitor__card--next glass-panel reveal">
+          <p class="monitor__card-label">Pakan berikutnya</p>
+          <span class="gauge__value" id="nextFeedValue">16:30</span>
+          <p class="monitor__card-sub" id="nextFeedLabel">jadwal sore &middot; WIB</p>
+          <div class="next-feed__bar" aria-hidden="true">
+            <div class="next-feed__bar-fill" id="nextFeedBar"></div>
+          </div>
+        </div>
+
+        <div class="monitor__card monitor__card--log glass-panel reveal">
+          <span class="dot dot--live" aria-hidden="true"></span>
+          <p class="status-log__text" id="statusLogText"><strong>Normal</strong> — sinkronisasi NTP berhasil, seluruh sensor merespons.</p>
+          <span class="status-log__time" id="statusLogTime" aria-live="polite">—:—:—</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= KONTROL ============================= -->
+  <section class="section" id="kontrol">
+    <div class="container">
+      <div class="section__head reveal">
+        <h2 class="section__title">Atur semuanya sesuai ritme Anda</h2>
+        <p class="section__lead">Tentukan kapan pakan turun, dan seberapa lebar katup terbuka — tanpa perlu menyentuh alat secara langsung.</p>
+      </div>
+
+      <div class="control__grid">
+
+        <!-- Panel: Jadwal Pakan -->
+        <div class="panel glass-panel reveal">
+          <div class="panel__head">
+            <h3 class="panel__title">
+              <span class="panel__title-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              </span>
+              Jadwal pakan
+            </h3>
+            <div class="panel__actions">
+              <button class="btn btn--ghost btn--small" id="btnResetSchedule" type="button">Kembalikan bawaan</button>
+              <button class="btn btn--ghost btn--small" id="btnToggleAddForm" type="button" aria-expanded="false" aria-controls="scheduleForm">+ Tambah</button>
+            </div>
+          </div>
+
+          <div class="schedule-form" id="scheduleForm">
+            <div class="schedule-form__inner">
+              <form id="addScheduleForm">
+                <div class="schedule-form__grid">
+                  <div class="field">
+                    <label class="field__label" for="inputTime">Waktu</label>
+                    <input class="field__input" type="time" id="inputTime" value="12:00" required>
+                  </div>
+                  <div class="field field--full">
+                    <label class="field__label" for="inputLabel">Nama jadwal</label>
+                    <input class="field__input" type="text" id="inputLabel" placeholder="mis. Siang" maxlength="14" required>
+                  </div>
+                </div>
+                <div class="schedule-form__actions">
+                  <button class="btn btn--primary btn--small" type="submit">Simpan jadwal</button>
+                  <button class="btn btn--ghost btn--small" type="button" id="btnCancelAdd">Batal</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <ul class="schedule-list" id="scheduleList" aria-label="Daftar jadwal pakan"></ul>
+
+          <p class="panel__foot">Geser tombol untuk mengaktifkan atau menonaktifkan jadwal. Ikon pensil mengubah waktu, ikon silang menghapusnya.</p>
+        </div>
+
+        <!-- Panel: Servo -->
+        <div class="panel glass-panel reveal">
+          <div class="panel__head">
+            <h3 class="panel__title">
+              <span class="panel__title-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 5V3M12 21v-2M5 12H3M21 12h-2M7.5 7.5 6 6M18 18l-1.5-1.5M7.5 16.5 6 18M18 6l-1.5 1.5"/></svg>
+              </span>
+              Katup servo
+            </h3>
+            <button class="btn btn--ghost btn--small" id="btnResetServo" type="button">Kembalikan bawaan</button>
+          </div>
+
+          <div class="mode-switch" id="servoModeSwitch" role="radiogroup" aria-label="Mode kontrol servo">
+            <button class="mode-switch__btn" type="button" data-mode="auto" role="radio" aria-checked="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>
+              Otomatis
+            </button>
+            <button class="mode-switch__btn" type="button" data-mode="manual" role="radio" aria-checked="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0v3.74"/><path d="M14 10.5a2 2 0 0 1 4 0v2a7 7 0 0 1-7 7h-1a6 6 0 0 1-5-2.7L3 13.5a1.7 1.7 0 0 1 2.4-2.4L7 12.5V6a2 2 0 0 1 4 0v4.5"/></svg>
+              Manual
+            </button>
+          </div>
+          <p class="servo__mode-note" id="servoModeNote">Servo mengikuti jadwal pakan secara otomatis — pindah ke Manual untuk kendali langsung saat ini juga.</p>
+
+          <div class="servo" id="servoControls">
+            <div class="servo__dial">
+              <svg class="servo__dial-svg" viewBox="0 0 188 188">
+                <circle class="servo__track" cx="94" cy="94" r="78"/>
+                <circle class="servo__arc" id="servoArc" cx="94" cy="94" r="78"/>
+              </svg>
+              <div class="servo__readout">
+                <span class="servo__icon" id="servoIcon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+                </span>
+                <span class="servo__angle" id="servoAngleValue">0°</span>
+                <span class="servo__state" id="servoStateLabel">Tertutup</span>
+              </div>
+            </div>
+
+            <div class="servo__slider-wrap">
+              <div class="servo__slider-scale">
+                <span>Tutup</span>
+                <span>Terbuka penuh</span>
+              </div>
+              <label class="sr-only" for="servoSlider">Sudut katup servo, 0 hingga 180 derajat</label>
+              <input type="range" class="servo__slider" id="servoSlider" min="0" max="180" step="1" value="0">
+            </div>
+
+            <div class="servo__presets" role="group" aria-label="Preset sudut servo">
+              <button class="chip" type="button" data-angle="0">Tutup</button>
+              <button class="chip" type="button" data-angle="45">¼ buka</button>
+              <button class="chip" type="button" data-angle="90">½ buka</button>
+              <button class="chip" type="button" data-angle="180">Penuh</button>
+            </div>
+          </div>
+
+          <p class="panel__foot">Mode <strong>Otomatis</strong>: servo dikendalikan penuh oleh jadwal pakan. Mode <strong>Manual</strong>: slider &amp; preset di atas aktif untuk kendali langsung. Sudut 0° tetap posisi aman bawaan pabrik.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= WORKFLOW ============================= -->
+  <section class="section" id="workflow">
+    <div class="container">
+      <div class="section__head reveal">
+        <h2 class="section__title">Cara kerja, langkah demi langkah</h2>
+        <p class="section__lead">Dari sinar matahari pertama sampai notifikasi ke ponsel Anda — begini alurnya di balik layar.</p>
+      </div>
+
+      <ol class="flow">
+        <li class="flow__step reveal">
+          <span class="flow__num" aria-hidden="true">01</span>
+          <div class="flow__body">
+            <h3 class="flow__title">Energi surya mengisi sistem</h3>
+            <p class="flow__text">Panel surya 10WP menangkap radiasi matahari dan mengisi aki 12V/5Ah melalui Solar Charge Controller. SCC menghentikan pengisian otomatis saat penuh, mencegah overcharge dan memperpanjang umur baterai.</p>
+            <span class="chip">Solar 10WP → SCC → Aki 12V/5Ah → ESP32</span>
+          </div>
+        </li>
+        <li class="flow__step reveal">
+          <span class="flow__num" aria-hidden="true">02</span>
+          <div class="flow__body">
+            <h3 class="flow__title">ESP32 sinkron waktu global (NTP)</h3>
+            <p class="flow__text">Saat sistem menyala, ESP32 terhubung ke NTP Server untuk memperoleh waktu presisi. Jadwal selalu tepat tanpa pengaturan manual, bahkan setelah alat di-restart.</p>
+            <span class="chip">NTP Server → RTC internal ESP32</span>
+          </div>
+        </li>
+        <li class="flow__step reveal">
+          <span class="flow__num" aria-hidden="true">03</span>
+          <div class="flow__body">
+            <h3 class="flow__title">Pakan didistribusikan otomatis</h3>
+            <p class="flow__text">Wadah HDPE/PP food-safe menjaga pakan tetap kering. Saat jadwal aktif (mode Otomatis), katup servo membuka corong, pakan jatuh ke rumah baling-baling, dan motor DC menyebarkannya secara sentrifugal ke seluruh kolam.</p>
+            <span class="chip">Servo buka → Motor DC → Distribusi merata</span>
+          </div>
+        </li>
+        <li class="flow__step reveal">
+          <span class="flow__num" aria-hidden="true">04</span>
+          <div class="flow__body">
+            <h3 class="flow__title">Monitoring TDS &amp; stok berjalan terus</h3>
+            <p class="flow__text">Sensor TDS memantau kepekatan air setiap saat. Sensor ultrasonik HC-SR04 mengukur jarak ke permukaan pakan tanpa kontak fisik untuk estimasi stok — sensor tetap bersih dan awet.</p>
+            <span class="chip">HC-SR04 non-kontak → estimasi stok</span>
+          </div>
+        </li>
+        <li class="flow__step reveal">
+          <span class="flow__num" aria-hidden="true">05</span>
+          <div class="flow__body">
+            <h3 class="flow__title">Early warning terkirim instan</h3>
+            <p class="flow__text">Begitu TDS melampaui 500 PPM, sistem langsung menandai peringatan pada dashboard — tindakan cepat bisa dilakukan sebelum ikan stres atau keracunan amonia.</p>
+            <span class="chip">TDS &gt; 500 PPM → Peringatan dini</span>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============================= ROADMAP ============================= -->
+  <section class="section section--tinted" id="roadmap">
+    <div class="container">
+      <div class="section__head reveal">
+        <h2 class="section__title">Visi menuju skala industri</h2>
+        <p class="section__lead">Inovasi tidak berhenti di prototipe. Sistem ini dirancang modular dan siap ditingkatkan menuju implementasi tambak komersial berskala besar.</p>
+      </div>
+
+      <div class="roadmap-grid">
+        <article class="roadmap-card roadmap-card--current glass-panel reveal">
+          <span class="roadmap-badge roadmap-badge--done">Selesai</span>
+          <p class="roadmap-phase">Fase 01 — Saat ini</p>
+          <h3 class="roadmap-title">Prototipe &amp; Proof of Concept</h3>
+          <ul class="roadmap-list">
+            <li>ESP32 sebagai MCU utama</li>
+            <li>Solar 10WP + Aki 12V/5Ah + SCC</li>
+            <li>Penyebaran sentrifugal motor DC</li>
+            <li>Sensor TDS + HC-SR04 ultrasonik</li>
+            <li>Jadwal NTP otomatis, mode Auto/Manual</li>
+          </ul>
+        </article>
+
+        <article class="roadmap-card glass-panel reveal">
+          <span class="roadmap-badge roadmap-badge--next">Berikutnya</span>
+          <p class="roadmap-phase">Fase 02 — Upgrade daya &amp; material</p>
+          <h3 class="roadmap-title">Skalabilitas fisik</h3>
+          <ul class="roadmap-list">
+            <li>Panel surya 50WP</li>
+            <li>Aki 20Ah kapasitas tinggi</li>
+            <li>Aktuator solar tracker otomatis</li>
+            <li>Rangka plat baja anti-korosi</li>
+            <li>Corong stainless steel</li>
+          </ul>
+        </article>
+
+        <article class="roadmap-card glass-panel reveal">
+          <span class="roadmap-badge roadmap-badge--planned">Direncanakan</span>
+          <p class="roadmap-phase">Fase 03 — Sensor &amp; kecerdasan</p>
+          <h3 class="roadmap-title">Ekspansi &amp; otomatisasi penuh</h3>
+          <ul class="roadmap-list">
+            <li>Sensor suhu air presisi</li>
+            <li>pH meter industrial-grade</li>
+            <li>Relai otomatisasi pompa air</li>
+            <li>Kamera pemantau kolam</li>
+            <li>Deteksi kesehatan ikan berbasis AI</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= DEVELOPER ============================= -->
+  <section class="section" id="developer">
+    <div class="container">
+      <div class="dev-card glass-panel reveal">
+        <div class="dev-card__avatar">AA</div>
+        <h2 class="dev-card__name">Arsad Azami Nursamal</h2>
+        <p class="dev-card__role">Sistem Informasi Jaringan &amp; Aplikasi (SIJA)</p>
+        <p class="dev-card__school">SMKN 2 Yogyakarta</p>
+        <p class="dev-card__desc">Inovasi ini lahir dari ruang lingkup pendidikan vokasi, menggabungkan ilmu jaringan internet, integrasi perangkat keras, dan algoritma perangkat lunak untuk memajukan sektor agrikultur di Indonesia.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================= FOOTER ============================= -->
+<footer class="footer">
+  <div class="container footer__inner">
+    <p class="footer__text">Smart Aquaculture V3 — dikembangkan oleh Arsad Azami Nursamal, SIJA, SMKN 2 Yogyakarta.</p>
+    <p class="footer__text">Dibangun dengan ESP32 &amp; energi surya.</p>
+  </div>
+</footer>
+
+<!-- ============================= AQUABOT CHAT ============================= -->
+<div class="aquabot" id="aquabot">
+  <div class="aquabot__panel" id="aquabotPanel" role="dialog" aria-label="Obrolan dengan AquaBot" aria-hidden="true">
+    <div class="aquabot__header">
+      <span class="aquabot__avatar" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c3 4 6 7.5 6 11.5A6 6 0 0 1 6 13.5C6 9.5 9 6 12 2Z"/></svg>
+      </span>
+      <div class="aquabot__title">
+        <p class="aquabot__name">AquaBot</p>
+        <p class="aquabot__status"><span class="dot dot--live" aria-hidden="true"></span>Online</p>
+      </div>
+      <button class="icon-btn" id="aquabotClose" type="button" aria-label="Tutup obrolan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="aquabot__messages" id="aquabotMessages" aria-live="polite"></div>
+
+    <div class="aquabot__suggestions" id="aquabotSuggestions">
+      <button class="chip" type="button" data-question="Kondisi alat sekarang gimana?">Kondisi alat sekarang?</button>
+      <button class="chip" type="button" data-question="TDS sekarang berapa?">TDS sekarang?</button>
+      <button class="chip" type="button" data-question="Servo lagi posisi apa?">Posisi servo?</button>
+      <button class="chip" type="button" data-question="Kenapa memakai ESP32?">Kenapa ESP32?</button>
+    </div>
+
+    <form class="aquabot__composer" id="aquabotForm">
+      <label class="sr-only" for="aquabotInput">Tulis pesan untuk AquaBot</label>
+      <input class="aquabot__input" type="text" id="aquabotInput" placeholder="Tanyakan apa saja…" autocomplete="off">
+      <button class="aquabot__send" id="aquabotSend" type="submit" aria-label="Kirim pesan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2 15 22l-4-9-9-4 20-7Z"/></svg>
+      </button>
+    </form>
+  </div>
+
+  <button class="aquabot__fab" id="aquabotFab" type="button" aria-expanded="false" aria-controls="aquabotPanel" aria-label="Buka obrolan dengan AquaBot">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
+    <span class="aquabot__fab-dot" aria-hidden="true"></span>
+  </button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
