@@ -1,0 +1,4 @@
+.env
+Key.env
+auth_info_baileys/
+node_modules/

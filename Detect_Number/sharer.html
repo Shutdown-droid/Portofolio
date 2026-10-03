@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Share Lokasi Saya</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <style>
+    body { font-family: Arial; text-align: center; padding: 50px; background: #d4edda; }
+    button { padding: 15px 30px; font-size: 18px; background: #28a745; color: white; border: none; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>📍 Bagikan Lokasi Anda</h1>
+  <p>Link ID: <strong id="roomId">Loading...</strong></p>
+  <button onclick="startSharing()">🚀 Mulai Bagikan Lokasi</button>
+  <p id="status"></p>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "MASUKKAN_API_KEY_ANDA",
+      authDomain: "project-id.firebaseapp.com",
+      databaseURL: "https://project-id-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "project-id"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let roomId = "room_" + Math.random().toString(36).substr(2, 9);
+    document.getElementById('roomId').textContent = roomId;
+
+    function startSharing() {
+      navigator.geolocation.watchPosition(position => {
+        const { latitude, longitude } = position.coords;
+        
+        db.ref('locations/' + roomId).set({
+          lat: latitude,
+          lng: longitude,
+          timestamp: Date.now()
+        });
+
+        document.getElementById('status').innerHTML = `✅ Lokasi sedang dibagikan<br>Lat: ${latitude.toFixed(5)}, Lng: ${longitude.toFixed(5)}`;
+      }, error => {
+        alert("Izinkan akses lokasi!");
+      }, { enableHighAccuracy: true });
+    }
+  </script>
+</body>
+</html>

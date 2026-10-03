@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Tracker</title>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <style>
+    body { font-family: Arial; margin: 0; padding: 20px; }
+    #map { height: 500px; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <h1>📍 Live Location Tracker</h1>
+  <input type="text" id="roomInput" placeholder="Masukkan Room ID" style="padding:10px; width:300px;">
+  <button onclick="startTracking()">Lihat Lokasi</button>
+
+  <div id="map"></div>
+
+  <script>
+    const firebaseConfig = { /* Sama seperti di sharer.html */ };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let map, marker;
+
+    function startTracking() {
+      const roomId = document.getElementById('roomInput').value.trim();
+      if (!roomId) return alert("Masukkan Room ID!");
+
+      if (map) map.remove();
+      map = L.map('map').setView([-6.2088, 106.8456], 15);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+      db.ref('locations/' + roomId).on('value', snapshot => {
+        const data = snapshot.val();
+        if (data) {
+          const { lat, lng } = data;
+          if (marker) marker.remove();
+          marker = L.marker([lat, lng]).addTo(map)
+            .bindPopup('Lokasi Saat Ini').openPopup();
+          map.setView([lat, lng], 16);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
