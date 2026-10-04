@@ -1,0 +1,6 @@
+{
+  "name": "Warung AI POS",
+  "description": "AI-powered glassmorphic Point of Sale for Warung & Kantin with QRIS smart toast, voice ordering, and dynamic receipts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
