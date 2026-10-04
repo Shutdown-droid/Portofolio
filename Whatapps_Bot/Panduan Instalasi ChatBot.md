@@ -1,21 +1,20 @@
-Markdown
 # 🤖 Dokumentasi Bot Asisten Pribadi WhatsApp
 
-Bot ini berfungsi sebagai asisten digital WhatsApp otomatis yang ditenagai oleh kecerdasan buatan berlapis (*Multi-Agent Fallback*). Sistem dirancang agar tidak mengganggu percakapan manusia melalui fitur *Cooldown Dinamis* dan perlindungan *Anti-Spam Bot*.
+Bot ini berfungsi sebagai asisten digital WhatsApp otomatis yang ditenagai oleh kecerdasan buatan berlapis (*Multi-Agent Fallback*). Sistem dirancang agar tidak mengganggu percakapan manusia melalui fitur **Cooldown Dinamis** dan perlindungan **Anti-Spam Bot**.
 
 ---
 
 ## ✨ Fitur Utama
 
-1. **4-Tier Multi-Agent Fallback:** Otomatis beralih dari Gemini ➔ Groq ➔ OpenRouter ➔ Hugging Face jika server utama sedang sibuk atau mengalami gangguan.
-2. **Clean Text Response:** Balasan murni berupa teks natural layaknya manusia, tanpa menyertakan label atau nama agen AI di depannya.
+1. **4-Tier Multi-Agent Fallback:** Otomatis beralih dari Gemini ➔ Groq ➔ OpenRouter ➔ Hugging Face jika server utama sibuk.
+2. **Clean Text Response:** Balasan murni berupa teks natural layaknya manusia, tanpa label AI.
 3. **Smart Cooldown 30 Menit:** 
-   - Jika Anda (*owner*) membalas chat, bot otomatis mati (diam) selama 30 menit.
-   - Waktu diam akan terus di-reset mundur ke 30 menit selama obrolan kalian masih berlangsung. 
-   - Bot baru akan aktif kembali jika obrolan benar-benar hening selama 30 menit penuh, dan ada chat *baru* yang masuk.
-4. **Anti-Bot Loop (BCA Detector):** Mendeteksi balasan instan di bawah 8 detik dari mesin/bot lain (seperti notifikasi Bank) dan langsung mematikan AI untuk mencegah *spamming* otomatis.
-5. **Anti-Backlog:** Otomatis mengabaikan pesan lama (yang tertunda lebih dari 60 detik) saat bot baru dinyalakan agar tidak merespon pesan basi secara borongan.
-6. **Group Filter:** Mengabaikan secara mutlak semua pesan yang berasal dari grup WhatsApp (`@g.us`).
+   - Jika Anda membalas chat, bot otomatis diam selama 30 menit.
+   - Waktu diam akan terus *ter-reset* ke 30 menit selama obrolan masih berlangsung. 
+   - Bot baru aktif kembali jika obrolan benar-benar hening selama 30 menit penuh, dan ada chat *baru*.
+4. **Anti-Bot Loop (BCA Detector):** Mendeteksi balasan instan (< 8 detik) dari bot lain dan langsung mematikan AI untuk mencegah *spamming* otomatis.
+5. **Anti-Backlog:** Otomatis mengabaikan pesan lama yang tertunda lebih dari 60 detik saat bot baru dinyalakan.
+6. **Group Filter:** Mengabaikan semua pesan dari grup WhatsApp (`@g.us`).
 
 ---
 
@@ -24,38 +23,47 @@ Bot ini berfungsi sebagai asisten digital WhatsApp otomatis yang ditenagai oleh 
 1. Buat folder baru khusus untuk proyek ini (contoh: `WhatsApp_Bot`).
 2. Buka folder tersebut di dalam **Visual Studio Code (VS Code)**.
 3. Buka Terminal terintegrasi di VS Code (`Ctrl` + `~`).
-4. Jika menggunakan Windows PowerShell dan muncul *error* `Execution_Policies`, buka PowerShell sebagai Administrator dan jalankan:
+4. Jika menggunakan Windows PowerShell dan muncul *error* `Execution_Policies`, jalankan perintah berikut:
    ```powershell
    Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
-Inisialisasi proyek Node.js baru:
+   ```
+5. Inisialisasi proyek Node.js:
+   ```bash
+   npm init -y
+   ```
 
-Bash
-npm init -y
-📦 Langkah 2: Instalasi Modul (Dependencies)
-Jalankan perintah berikut di terminal untuk memasang pustaka WhatsApp (Baileys) dan seluruh SDK AI:
+---
 
-Bash
+## 📦 Langkah 2: Instalasi Dependencies
+
+Jalankan perintah berikut di terminal untuk memasang pustaka WhatsApp dan seluruh SDK AI:
+
+```bash
 npm install @whiskeysockets/baileys pino qrcode-terminal dotenv @google/genai groq-sdk openai
-(Opsional) Jika versi npm Anda meminta persetujuan untuk menjalankan skrip instalasi, gunakan perintah:
+```
 
-Bash
-npm install-scripts approve --all
-🔑 Langkah 3: Konfigurasi API Keys (.env)
-Buat file baru bernama .env di dalam folder root proyek Anda.
+---
 
-Salin format di bawah ini dan masukkan API Key Anda (kosongkan bagian yang belum Anda miliki kuncinya):
+## 🔑 Langkah 3: Konfigurasi API Keys (`.env`)
 
-Code snippet
+1. Buat file baru bernama **`.env`** di dalam folder proyek Anda. 
+2. Salin teks di bawah ini dan masukkan API Key Anda:
+
+```env
 GEMINI_API_KEY=masukkan_kunci_api_gemini_di_sini
 GROQ_API_KEY=masukkan_kunci_api_groq_di_sini
 OPENROUTER_API_KEY=masukkan_kunci_api_openrouter_di_sini
 HUGGINGFACE_API_KEY=masukkan_kunci_api_huggingface_di_sini
-💻 Langkah 4: Kode Utama (wa_bot.js)
-Buat file baru bernama wa_bot.js.
+```
 
-Salin dan tempel (paste) seluruh baris kode JavaScript di bawah ini ke dalam file tersebut:
+---
 
-JavaScript
+## 💻 Langkah 4: Kode Utama (`wa_bot.js`)
+
+1. Buat file baru bernama **`wa_bot.js`**.
+2. Salin dan tempel seluruh kode di bawah ini:
+
+```javascript
 const { makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys');
 const pino = require('pino');
 const qrcode = require('qrcode-terminal');
@@ -69,8 +77,8 @@ try { OpenAI = require('openai'); } catch (e) {}
 
 const ai = (process.env.GEMINI_API_KEY && GoogleGenAI) ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }) : null;
 const groq = (process.env.GROQ_API_KEY && Groq) ? new Groq({ apiKey: process.env.GROQ_API_KEY }) : null;
-const openrouter = (process.env.OPENROUTER_API_KEY && OpenAI) ? new OpenAI({ apiKey: process.env.OPENROUTER_API_KEY, baseURL: '[https://openrouter.ai/api/v1](https://openrouter.ai/api/v1)' }) : null;
-const huggingface = (process.env.HUGGINGFACE_API_KEY && OpenAI) ? new OpenAI({ apiKey: process.env.HUGGINGFACE_API_KEY, baseURL: '[https://api-inference.huggingface.co/v1/](https://api-inference.huggingface.co/v1/)' }) : null;
+const openrouter = (process.env.OPENROUTER_API_KEY && OpenAI) ? new OpenAI({ apiKey: process.env.OPENROUTER_API_KEY, baseURL: 'https://openrouter.ai/api/v1' }) : null;
+const huggingface = (process.env.HUGGINGFACE_API_KEY && OpenAI) ? new OpenAI({ apiKey: process.env.HUGGINGFACE_API_KEY, baseURL: 'https://api-inference.huggingface.co/v1/' }) : null;
 
 if (![ai, groq, openrouter, huggingface].some(Boolean)) {
     throw new Error('Atur setidaknya satu API key yang valid di dalam file .env atau Key.env.');
@@ -147,7 +155,7 @@ async function connectToWhatsApp() {
         if (Math.floor(Date.now() / 1000) - msg.messageTimestamp > 60) return;
 
         const now = Date.now();
-        const COOLDOWN_DURATION = 30 * 60 * 1000; // 30 Menit dalam milidetik
+        const COOLDOWN_DURATION = 30 * 60 * 1000; // 30 Menit
 
         if (!chatStates[senderID]) {
             chatStates[senderID] = { lastActivity: 0, isMuted: false, lastAITime: 0, botReplyCount: 0 };
@@ -178,7 +186,7 @@ async function connectToWhatsApp() {
         // 3. DETEKSI BOT LAIN (Anti BCA-Loop)
         if (state.lastAITime > 0) {
             const timeSinceAIReply = now - state.lastAITime;
-            if (timeSinceAIReply < 8000) { // Toleransi balasan instan mesin di bawah 8 detik
+            if (timeSinceAIReply < 8000) { // Toleransi balasan instan di bawah 8 detik
                 state.botReplyCount += 1;
                 if (state.botReplyCount >= 2) {
                     state.isMuted = true;
@@ -205,25 +213,18 @@ async function connectToWhatsApp() {
 }
 
 connectToWhatsApp();
-▶️ Langkah 5: Cara Menjalankan Sistem
-Buka terminal di dalam folder proyek Anda (WhatsApp_Bot).
+```
 
-Jalankan perintah eksekusi berikut:
+---
 
-Bash
-node wa_bot.js
-Tunggu hingga Kode QR berbentuk piksel muncul di layar terminal.
+## ▶️ Langkah 5: Cara Menjalankan Sistem
 
-Buka aplikasi WhatsApp di smartphone Anda.
-
-Masuk ke Perangkat Tertaut (Linked Devices) ➔ Tautkan Perangkat (Link a Device).
-
-Arahkan kamera untuk memindai kode QR yang ada di terminal.
-
-Selesai! Bot kini telah terhubung dan akan terus siaga merespon pesan selama jendela terminal tersebut tidak ditutup.
-
-Catatan:
-
-Untuk mematikan bot secara manual, klik pada area terminal dan tekan Ctrl + C.
-
-Jika ingin mendapatkan kode QR yang baru (misalnya karena sesi logout), hapus folder bernama auth_info_baileys yang ada di dalam proyek, lalu jalankan kembali perintah node wa_bot.js.
+1. Buka terminal di dalam folder proyek Anda.
+2. Jalankan perintah eksekusi berikut:
+   ```bash
+   node wa_bot.js
+   ```
+3. Tunggu hingga **Kode QR** muncul di layar terminal.
+4. Buka aplikasi WhatsApp di HP Anda ➔ **Perangkat Tertaut** ➔ **Tautkan Perangkat**.
+5. Arahkan kamera untuk memindai kode QR tersebut.
+6. Selesai! Bot kini telah terhubung dan aktif.
