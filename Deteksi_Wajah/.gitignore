@@ -1,0 +1,11 @@
+# Mengabaikan folder Virtual Environment Python
+env_face/
+.venv/
+
+# Mengabaikan cache sistem Python
+__pycache__/
+*.pyc
+
+# Mengabaikan file API Key atau file rahasia (jika ada)
+.env
+Key.env
